@@ -1,0 +1,3184 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>星星守护小屋 - 小星的成长乐园</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* 基础样式 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        :root {
+            --primary: #FF8C42;
+            --secondary: #4FC3F7;
+            --accent: #BA68C8;
+            --light: #FFF9E6;
+            --dark: #333333;
+            --success: #4CAF50;
+            --danger: #F44336;
+            --warning: #FFC107;
+            --gray: #E0E0E0;
+        }
+        
+        body {
+            background-color: var(--light);
+            color: var(--dark);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        /* 页面通用样式 */
+        .page {
+            display: none;
+            min-height: 100vh;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        /* 按钮样式 */
+        .btn {
+            display: inline-block;
+            padding: 12px 24px;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .btn:hover {
+            background-color: #ff6f00;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+        
+        .btn-secondary {
+            background-color: var(--secondary);
+        }
+        
+        .btn-secondary:hover {
+            background-color: #039BE5;
+        }
+        
+        .btn-accent {
+            background-color: var(--accent);
+        }
+        
+        .btn-accent:hover {
+            background-color: #AB47BC;
+        }
+        
+        .btn-small {
+            padding: 8px 16px;
+            font-size: 14px;
+        }
+        
+        /* 卡片样式 */
+        .card {
+            background-color: white;
+            border-radius: 16px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin-bottom: 20px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 20px rgba(0, 0, 0, 0.15);
+        }
+        
+        /* 首页样式 */
+        .home-page {
+            background: linear-gradient(135deg, #FFE8D6 0%, #FFD699 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .home-page::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><circle cx="20" cy="20" r="2" fill="%23FF8C42" opacity="0.6"/><circle cx="50" cy="10" r="1.5" fill="%23FF8C42" opacity="0.4"/><circle cx="80" cy="30" r="1" fill="%23FF8C42" opacity="0.3"/><circle cx="10" cy="60" r="1.5" fill="%23FF8C42" opacity="0.5"/><circle cx="40" cy="80" r="2" fill="%23FF8C42" opacity="0.6"/><circle cx="70" cy="70" r="1" fill="%23FF8C42" opacity="0.4"/><circle cx="90" cy="50" r="1.5" fill="%23FF8C42" opacity="0.5"/></svg>');
+            z-index: 0;
+        }
+        
+        .home-content {
+            position: relative;
+            z-index: 1;
+            max-width: 600px;
+            padding: 20px;
+        }
+        
+        .character {
+            width: 180px;
+            height: 180px;
+            background: linear-gradient(135deg, #FFB74D 0%, #FF8C42 100%);
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            position: relative;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+        
+        .character::before {
+            content: "";
+            position: absolute;
+            top: 30px;
+            width: 80px;
+            height: 80px;
+            background-color: white;
+            border-radius: 50%;
+        }
+        
+        .character::after {
+            content: "";
+            position: absolute;
+            bottom: 40px;
+            width: 100px;
+            height: 40px;
+            background-color: white;
+            border-radius: 20px;
+        }
+        
+        .game-title {
+            font-size: 36px;
+            color: var(--primary);
+            margin-bottom: 10px;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        .game-subtitle {
+            font-size: 18px;
+            color: var(--dark);
+            margin-bottom: 30px;
+            opacity: 0.8;
+        }
+        
+        .start-btn {
+            margin-top: 20px;
+            font-size: 20px;
+            padding: 15px 50px;
+        }
+        
+        /* 顶部导航 */
+        .top-nav {
+            display: flex;
+            justify-content: flex-end;
+            padding: 15px 20px;
+            position: absolute;
+            top: 0;
+            right: 0;
+            z-index: 10;
+        }
+        
+        .nav-icon {
+            width: 40px;
+            height: 40px;
+            margin-left: 15px;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: white;
+            border-radius: 50%;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .nav-icon:hover {
+            transform: scale(1.1);
+        }
+        
+        /* 底部导航 - 手机端 */
+        .bottom-nav {
+            display: none;
+            justify-content: space-around;
+            align-items: center;
+            padding: 12px 0;
+            background-color: white;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.1);
+            z-index: 100;
+        }
+        
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+            padding: 5px 10px;
+            border-radius: 10px;
+            transition: background-color 0.3s;
+        }
+        
+        .nav-item.active {
+            background-color: var(--light);
+        }
+        
+        .nav-icon-large {
+            width: 28px;
+            height: 28px;
+            margin-bottom: 5px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 20px;
+        }
+        
+        .nav-text {
+            font-size: 12px;
+            font-weight: 500;
+        }
+        
+        /* 主界面样式 */
+        .main-page {
+            background-color: var(--light);
+            padding-top: 20px;
+            min-height: 100vh;
+        }
+        
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding: 15px 20px;
+            background-color: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+        
+        .stars-count {
+            font-size: 20px;
+            color: var(--primary);
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+        }
+        
+        .stars-count i {
+            margin-right: 8px;
+            color: #FFC107;
+        }
+        
+        .ai-hint {
+            background-color: #E3F2FD;
+            padding: 12px 20px;
+            border-radius: 50px;
+            font-size: 16px;
+            border: 1px solid #BBDEFB;
+            max-width: 70%;
+            display: flex;
+            align-items: center;
+        }
+        
+        .ai-hint i {
+            margin-right: 10px;
+            color: var(--secondary);
+        }
+        
+        /* 新主界面布局 */
+        .main-layout {
+            display: flex;
+            gap: 25px;
+        }
+        
+        .main-content {
+            flex: 3;
+        }
+        
+        .main-sidebar {
+            flex: 1;
+        }
+        
+        .modules-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 25px;
+            margin-bottom: 25px;
+        }
+        
+        .module-card {
+            height: 200px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            border-radius: 20px;
+            color: white;
+            font-size: 22px;
+            font-weight: bold;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        }
+        
+        .module-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.4) 100%);
+            z-index: 1;
+        }
+        
+        .module-card span {
+            position: relative;
+            z-index: 2;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        
+        .module-card i {
+            font-size: 40px;
+            margin-bottom: 15px;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .daily-task {
+            background: linear-gradient(135deg, #FFB74D 0%, #FF8C42 100%);
+        }
+        
+        .safety-challenge {
+            background: linear-gradient(135deg, #4FC3F7 0%, #0288D1 100%);
+        }
+        
+        .badge-gallery {
+            background: linear-gradient(135deg, #BA68C8 0%, #7B1FA2 100%);
+        }
+        
+        .growth-diary {
+            background: linear-gradient(135deg, #81C784 0%, #388E3C 100%);
+        }
+        
+        /* 任务预览区域 */
+        .task-preview {
+            background-color: white;
+            border-radius: 16px;
+            padding: 25px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            margin-bottom: 25px;
+        }
+        
+        .preview-title {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: var(--dark);
+            display: flex;
+            align-items: center;
+        }
+        
+        .preview-title i {
+            margin-right: 10px;
+            color: var(--primary);
+        }
+        
+        .preview-content {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .preview-item {
+            flex: 1;
+            background-color: #F9F9F9;
+            border-radius: 12px;
+            padding: 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .preview-item:hover {
+            background-color: #F0F0F0;
+            transform: translateY(-3px);
+        }
+        
+        .preview-icon {
+            font-size: 30px;
+            margin-bottom: 10px;
+            color: var(--primary);
+        }
+        
+        .preview-name {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .preview-desc {
+            font-size: 12px;
+            color: #666;
+        }
+        
+        /* 侧边栏样式 */
+        .sidebar-card {
+            background-color: white;
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            margin-bottom: 25px;
+        }
+        
+        .sidebar-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: var(--dark);
+            display: flex;
+            align-items: center;
+        }
+        
+        .sidebar-title i {
+            margin-right: 10px;
+            color: var(--primary);
+        }
+        
+        .recent-activity {
+            list-style: none;
+        }
+        
+        .activity-item {
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            align-items: center;
+        }
+        
+        .activity-item:last-child {
+            border-bottom: none;
+        }
+        
+        .activity-icon {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background-color: #E3F2FD;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 10px;
+            color: var(--secondary);
+        }
+        
+        .activity-text {
+            font-size: 14px;
+        }
+        
+        .no-activity {
+            text-align: center;
+            color: #999;
+            font-style: italic;
+            padding: 15px 0;
+        }
+        
+        .progress-summary {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .progress-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .progress-label {
+            font-size: 14px;
+        }
+        
+        .progress-value {
+            font-weight: bold;
+            color: var(--primary);
+        }
+        
+        /* 任务页面样式 */
+        .task-page {
+            background-color: var(--light);
+            padding-top: 20px;
+            min-height: 100vh;
+        }
+        
+        .task-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            padding: 15px 20px;
+            background-color: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+        
+        .back-btn {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            color: var(--dark);
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        .back-btn:hover {
+            color: var(--primary);
+        }
+        
+        .back-icon {
+            width: 24px;
+            height: 24px;
+            margin-right: 8px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .task-title {
+            font-size: 24px;
+            color: var(--dark);
+            font-weight: bold;
+        }
+        
+        .task-progress {
+            font-size: 16px;
+            color: #666;
+        }
+        
+        .task-content {
+            display: flex;
+            margin-bottom: 25px;
+            gap: 25px;
+        }
+        
+        .scene-image {
+            flex: 1;
+            background-color: #f5f5f5;
+            border-radius: 16px;
+            min-height: 350px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 18px;
+            color: #999;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .scene-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .scene-placeholder {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .scene-placeholder i {
+            font-size: 60px;
+            margin-bottom: 15px;
+            opacity: 0.5;
+        }
+        
+        .interaction-area {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .option-btn {
+            display: block;
+            width: 100%;
+            padding: 18px;
+            background-color: white;
+            border: 2px solid var(--gray);
+            border-radius: 12px;
+            font-size: 16px;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+        
+        .option-btn:hover {
+            border-color: var(--primary);
+            background-color: #FFF3E0;
+        }
+        
+        .option-btn.correct {
+            border-color: var(--success);
+            background-color: #E8F5E9;
+        }
+        
+        .option-btn.incorrect {
+            border-color: var(--danger);
+            background-color: #FFEBEE;
+        }
+        
+        .task-footer {
+            margin-top: 25px;
+        }
+        
+        .progress-container {
+            margin-bottom: 20px;
+        }
+        
+        .progress-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-size: 14px;
+            color: #666;
+        }
+        
+        .progress-bar {
+            height: 20px;
+            background-color: #e0e0e0;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            border-radius: 10px;
+            transition: width 0.5s ease;
+        }
+        
+        .ai-feedback {
+            background-color: #E8F5E9;
+            padding: 20px;
+            border-radius: 12px;
+            border-left: 5px solid var(--success);
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .ai-feedback i {
+            margin-right: 10px;
+            color: var(--success);
+            font-size: 20px;
+        }
+        
+        /* 徽章馆样式 */
+        .badge-page {
+            background-color: var(--light);
+            padding-top: 20px;
+            min-height: 100vh;
+        }
+        
+        .badge-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+            margin-top: 20px;
+        }
+        
+        .badge-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 25px 15px;
+            border-radius: 20px;
+            background-color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            text-align: center;
+        }
+        
+        .badge-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        }
+        
+        .badge-icon {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 40px;
+            color: white;
+            position: relative;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        .badge-locked {
+            background: linear-gradient(135deg, #BDBDBD 0%, #757575 100%);
+        }
+        
+        .badge-unlocked {
+            background: linear-gradient(135deg, #FFB74D 0%, #FF8C42 100%);
+        }
+        
+        .badge-name {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+        
+        .badge-desc {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 10px;
+        }
+        
+        .badge-status {
+            font-size: 12px;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-weight: 500;
+        }
+        
+        .status-locked {
+            background-color: #F5F5F5;
+            color: #9E9E9E;
+        }
+        
+        .status-unlocked {
+            background-color: #E8F5E9;
+            color: var(--success);
+        }
+        
+        /* 成长日记样式 */
+        .diary-page {
+            background-color: var(--light);
+            padding-top: 20px;
+            min-height: 100vh;
+        }
+        
+        .diary-content {
+            display: flex;
+            gap: 25px;
+        }
+        
+        .diary-list {
+            flex: 1;
+            background-color: white;
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            max-height: 500px;
+            overflow-y: auto;
+        }
+        
+        .diary-item {
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .diary-item:hover {
+            background-color: #F5F5F5;
+        }
+        
+        .diary-item.active {
+            background-color: #E3F2FD;
+            border-left: 4px solid var(--secondary);
+        }
+        
+        .diary-item-title {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .diary-item-date {
+            font-size: 12px;
+            color: #999;
+        }
+        
+        .diary-detail {
+            flex: 1;
+            background-color: white;
+            border-radius: 16px;
+            padding: 25px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+        
+        .diary-image {
+            width: 400px;
+            height: 300px;
+            background-color: #F5F5F5;
+            border-radius: 16px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 60px;
+            color: #BDBDBD;
+            overflow: hidden;
+        }
+        
+        .diary-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .diary-text {
+            font-size: 16px;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+        
+        .certificate {
+            width: 100%;
+            max-width: 400px;
+            background: linear-gradient(135deg, #FFF9C4 0%, #FFECB3 100%);
+            border: 8px solid #FFD54F;
+            border-radius: 16px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        }
+        
+        .certificate-title {
+            font-size: 24px;
+            font-weight: bold;
+            color: #5D4037;
+            margin-bottom: 15px;
+        }
+        
+        .certificate-text {
+            font-size: 16px;
+            color: #5D4037;
+            margin-bottom: 20px;
+        }
+        
+        .certificate-stars {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .certificate-star {
+            font-size: 30px;
+            color: #FFC107;
+        }
+        
+        /* 响应式调整 */
+        @media (max-width: 768px) {
+            .top-nav {
+                display: none;
+            }
+            
+            .bottom-nav {
+                display: flex;
+            }
+            
+            .home-page, .main-page, .task-page, .badge-page, .diary-page {
+                padding-bottom: 80px;
+            }
+            
+            .main-layout {
+                flex-direction: column;
+            }
+            
+            .modules-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .module-card {
+                height: 150px;
+                width: 100%;
+            }
+            
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+            
+            .stars-count {
+                margin-bottom: 0;
+            }
+            
+            .ai-hint {
+                max-width: 100%;
+                width: 100%;
+            }
+            
+            .task-content {
+                flex-direction: column;
+            }
+            
+            .interaction-area {
+                padding-left: 0;
+                padding-top: 0;
+            }
+            
+            .option-btn {
+                height: 60px;
+                border-radius: 12px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+            
+            .badge-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .diary-content {
+                flex-direction: column;
+            }
+            
+            .preview-content {
+                flex-direction: column;
+            }
+        }
+        
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .modules-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .badge-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        /* 模态框样式 */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modal-content {
+            background-color: white;
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            animation: modalAppear 0.3s ease;
+        }
+        
+        @keyframes modalAppear {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+        
+        .modal-icon {
+            font-size: 60px;
+            color: #FFC107;
+            margin-bottom: 20px;
+        }
+        
+        .modal-title {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: var(--primary);
+        }
+        
+        .modal-text {
+            font-size: 16px;
+            margin-bottom: 25px;
+            line-height: 1.6;
+        }
+        
+        .modal-btn {
+            margin-top: 10px;
+        }
+        
+        /* 新增样式：任务选择页 */
+        .task-selection-page {
+            background-color: var(--light);
+            padding-top: 20px;
+            min-height: 100vh;
+        }
+        
+        .task-category {
+            margin-bottom: 30px;
+        }
+        
+        .category-title {
+            font-size: 22px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+        }
+        
+        .category-title i {
+            margin-right: 10px;
+        }
+        
+        .task-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+        }
+        
+        .task-item {
+            background-color: white;
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .task-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        }
+        
+        .task-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 12px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+            color: white;
+        }
+        
+        .task-info {
+            flex: 1;
+        }
+        
+        .task-name {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .task-desc {
+            font-size: 14px;
+            color: #666;
+        }
+        
+        .task-status {
+            font-size: 12px;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-weight: 500;
+        }
+        
+        .status-completed {
+            background-color: #E8F5E9;
+            color: var(--success);
+        }
+        
+        .status-incomplete {
+            background-color: #FFF3E0;
+            color: var(--primary);
+        }
+        
+        /* 新增样式：手写区域 */
+        .handwriting-area {
+            background-color: white;
+            border: 2px dashed #ccc;
+            border-radius: 12px;
+            height: 150px;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            position: relative;
+        }
+        
+        .handwriting-placeholder {
+            color: #999;
+            font-size: 16px;
+        }
+        
+        .handwriting-controls {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+        }
+        
+        .undo-btn {
+            background-color: #f5f5f5;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+        }
+        
+        .text-suggestions {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .suggestion-btn {
+            padding: 8px 12px;
+            background-color: #E3F2FD;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        
+        /* 新增样式：整理任务 */
+        .item-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .item {
+            padding: 10px 15px;
+            background-color: #FFF3E0;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .item.selected {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .location-container {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .location {
+            padding: 15px;
+            background-color: #F5F5F5;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .location:hover {
+            background-color: #E0E0E0;
+        }
+        
+        .location.correct {
+            background-color: #E8F5E9;
+            border: 2px solid var(--success);
+        }
+        
+        .location.incorrect {
+            background-color: #FFEBEE;
+            border: 2px solid var(--danger);
+        }
+        
+        .location-label {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .location-desc {
+            font-size: 12px;
+            color: #666;
+        }
+        
+        /* 新增样式：网络小卫士 */
+        .message-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .message-item {
+            background-color: white;
+            border-radius: 12px;
+            padding: 15px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+        
+        .message-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .message-warning {
+            color: var(--danger);
+            margin-right: 8px;
+        }
+        
+        .message-safe {
+            color: var(--success);
+            margin-right: 8px;
+        }
+        
+        .message-content {
+            margin-bottom: 10px;
+        }
+        
+        .message-actions {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .action-btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+        
+        .shield-btn {
+            background-color: #FFEBEE;
+            color: var(--danger);
+        }
+        
+        .reply-btn {
+            background-color: #E8F5E9;
+            color: var(--success);
+        }
+        
+        .action-btn.selected {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        /* 新增样式：伙伴的小烦恼 */
+        .friend-scenes {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .friend-scene {
+            flex: 1;
+            background-color: white;
+            border-radius: 12px;
+            padding: 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .friend-scene.active {
+            background-color: #E3F2FD;
+            border: 2px solid var(--secondary);
+        }
+        
+        .friend-scene-icon {
+            font-size: 30px;
+            margin-bottom: 10px;
+            color: var(--secondary);
+        }
+        
+        .friend-actions {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .friend-action {
+            padding: 10px 15px;
+            background-color: #FFF3E0;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .friend-action:hover {
+            background-color: #FFE0B2;
+        }
+        
+        .friend-action.selected {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .friend-feedback {
+            background-color: #F5F5F5;
+            border-radius: 12px;
+            padding: 15px;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+<body>
+    <!-- 首页 -->
+    <div class="page home-page active" id="homePage">
+        <div class="top-nav">
+            <div class="nav-icon" id="badgeIcon">
+                <i class="fas fa-star"></i>
+            </div>
+            <div class="nav-icon" id="settingsIcon">
+                <i class="fas fa-cog"></i>
+            </div>
+        </div>
+        
+        <div class="home-content">
+            <div class="character"></div>
+            <h1 class="game-title">小星的成长乐园</h1>
+            <p class="game-subtitle">收集星星徽章，学习成长知识</p>
+            <button class="btn start-btn" id="startBtn">开始冒险</button>
+            <p class="no-activity">点击开始冒险再向下滑动哦~~~</p>
+        </div>
+        
+        <div class="bottom-nav">
+            <div class="nav-item" id="mobileHomeIcon">
+                <div class="nav-icon-large">
+                    <i class="fas fa-home"></i>
+                </div>
+                <div class="nav-text">首页</div>
+            </div>
+            <div class="nav-item" id="mobileTaskIcon">
+                <div class="nav-icon-large">
+                    <i class="fas fa-tasks"></i>
+                </div>
+                <div class="nav-text">任务</div>
+            </div>
+            <div class="nav-item" id="mobileBadgeIcon">
+                <div class="nav-icon-large">
+                    <i class="fas fa-star"></i>
+                </div>
+                <div class="nav-text">徽章</div>
+            </div>
+            <div class="nav-item" id="mobileDiaryIcon">
+                <div class="nav-icon-large">
+                    <i class="fas fa-book"></i>
+                </div>
+                <div class="nav-text">日记</div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 主界面 -->
+    <div class="page main-page" id="mainPage">
+        <div class="container">
+            <div class="header">
+                <div class="stars-count">
+                    <i class="fas fa-star"></i>
+                    <span id="starsCount">我的星星：0/10</span>
+                </div>
+                <div class="ai-hint">
+                    <i class="fas fa-robot"></i>
+                    <span id="aiHint">快去看看我的作业吧～</span>
+                </div>
+            </div>
+            
+            <div class="main-layout">
+                <div class="main-content">
+                    <!-- 任务预览区域 -->
+                    <div class="task-preview">
+                        <div class="preview-title">
+                            <i class="fas fa-bolt"></i>
+                            今日推荐任务
+                        </div>
+                        <div class="preview-content">
+                            <div class="preview-item" id="previewTask1">
+                                <div class="preview-icon">
+                                    <i class="fas fa-tshirt"></i>
+                                </div>
+                                <div class="preview-name">小屋整理师</div>
+                                <div class="preview-desc">整理房间物品</div>
+                            </div>
+                            <div class="preview-item" id="previewTask2">
+                                <div class="preview-icon">
+                                    <i class="fas fa-shield-alt"></i>
+                                </div>
+                                <div class="preview-name">陌生人敲门</div>
+                                <div class="preview-desc">学习安全知识</div>
+                            </div>
+                            <div class="preview-item" id="previewTask3">
+                                <div class="preview-icon">
+                                    <i class="fas fa-hands-helping"></i>
+                                </div>
+                                <div class="preview-name">伙伴的小烦恼</div>
+                                <div class="preview-desc">帮助朋友解决问题</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 主要模块区域 -->
+                    <div class="modules-grid">
+                        <div class="module-card daily-task" id="dailyTask">
+                            <i class="fas fa-home"></i>
+                            <span>日常守护任务</span>
+                        </div>
+                        <div class="module-card safety-challenge" id="safetyChallenge">
+                            <i class="fas fa-shield-alt"></i>
+                            <span>安全守护关卡</span>
+                        </div>
+                        <div class="module-card badge-gallery" id="badgeGallery">
+                            <i class="fas fa-trophy"></i>
+                            <span>星星徽章馆</span>
+                        </div>
+                        <div class="module-card growth-diary" id="growthDiary">
+                            <i class="fas fa-book-open"></i>
+                            <span>成长日记</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="main-sidebar">
+                    <!-- 最近活动 -->
+                    <div class="sidebar-card">
+                        <div class="sidebar-title">
+                            <i class="fas fa-history"></i>
+                            最近活动
+                        </div>
+                        <ul class="recent-activity" id="recentActivity">
+                            <!-- 初始状态显示提示 -->
+                            <li class="no-activity">你还没有开始游戏活动哦~让我们一起来玩小游戏吧！</li>
+                        </ul>
+                    </div>
+                    
+                    <!-- 进度统计 -->
+                    <div class="sidebar-card">
+                        <div class="sidebar-title">
+                            <i class="fas fa-chart-line"></i>
+                            进度统计
+                        </div>
+                        <div class="progress-summary">
+                            <div class="progress-item">
+                                <span class="progress-label">日常任务完成</span>
+                                <span class="progress-value" id="dailyProgressValue">0/3</span>
+                            </div>
+                            <div class="progress-item">
+                                <span class="progress-label">安全关卡完成</span>
+                                <span class="progress-value" id="safetyProgressValue">0/3</span>
+                            </div>
+                            <div class="progress-item">
+                                <span class="progress-label">徽章解锁</span>
+                                <span class="progress-value" id="badgeProgressValue">0/6</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 日常任务选择页 -->
+    <div class="page task-selection-page" id="dailyTasksPage">
+        <div class="container">
+            <div class="task-header">
+                <div class="back-btn" id="backFromDailyTasks">
+                    <div class="back-icon">
+                        <i class="fas fa-arrow-left"></i>
+                    </div>
+                    <span>回主界面</span>
+                </div>
+                <h2 class="task-title">日常守护任务</h2>
+                <div class="task-progress">学习价值观和生活技能</div>
+            </div>
+            
+            <div class="task-category">
+                <div class="category-title">
+                    <i class="fas fa-heart"></i>
+                    亲情与沟通
+                </div>
+                <div class="task-list">
+                    <div class="task-item" id="familyConnectTask">
+                        <div class="task-icon" style="background: linear-gradient(135deg, #FFB74D 0%, #FF8C42 100%);">
+                            <i class="fas fa-comments"></i>
+                        </div>
+                        <div class="task-info">
+                            <div class="task-name">亲情连线</div>
+                            <div class="task-desc">帮助小星与父母联系，传递关心</div>
+                        </div>
+                        <div class="task-status status-incomplete">未完成</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="task-category">
+                <div class="category-title">
+                    <i class="fas fa-home"></i>
+                    生活自理
+                </div>
+                <div class="task-list">
+                    <div class="task-item" id="roomOrganizerTask">
+                        <div class="task-icon" style="background: linear-gradient(135deg, #66BB6A 0%, #4CAF50 100%);">
+                            <i class="fas fa-tshirt"></i>
+                        </div>
+                        <div class="task-info">
+                            <div class="task-name">小屋整理师</div>
+                            <div class="task-desc">整理小星的房间，学习物品分类</div>
+                        </div>
+                        <div class="task-status status-incomplete">未完成</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="task-category">
+                <div class="category-title">
+                    <i class="fas fa-hands-helping"></i>
+                    友善互助
+                </div>
+                <div class="task-list">
+                    <div class="task-item" id="friendTroubleTask">
+                        <div class="task-icon" style="background: linear-gradient(135deg, #4FC3F7 0%, #0288D1 100%);">
+                            <i class="fas fa-hands-helping"></i>
+                        </div>
+                        <div class="task-info">
+                            <div class="task-name">伙伴的小烦恼</div>
+                            <div class="task-desc">帮助小伙伴解决烦恼，学习友善互助</div>
+                        </div>
+                        <div class="task-status status-incomplete">未完成</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 安全关卡选择页 -->
+    <div class="page task-selection-page" id="safetyTasksPage">
+        <div class="container">
+            <div class="task-header">
+                <div class="back-btn" id="backFromSafetyTasks">
+                    <div class="back-icon">
+                        <i class="fas fa-arrow-left"></i>
+                    </div>
+                    <span>回主界面</span>
+                </div>
+                <h2 class="task-title">安全守护关卡</h2>
+                <div class="task-progress">学习自我保护和安全知识</div>
+            </div>
+            
+            <div class="task-category">
+                <div class="category-title">
+                    <i class="fas fa-house-user"></i>
+                    居家安全
+                </div>
+                <div class="task-list">
+                    <div class="task-item" id="strangerKnockTask">
+                        <div class="task-icon" style="background: linear-gradient(135deg, #F44336 0%, #D32F2F 100%);">
+                            <i class="fas fa-door-closed"></i>
+                        </div>
+                        <div class="task-info">
+                            <div class="task-name">陌生人敲门</div>
+                            <div class="task-desc">学习应对陌生人敲门的正确方法</div>
+                        </div>
+                        <div class="task-status status-incomplete">未完成</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="task-category">
+                <div class="category-title">
+                    <i class="fas fa-laptop"></i>
+                    网络安全
+                </div>
+                <div class="task-list">
+                    <div class="task-item" id="internetGuardianTask">
+                        <div class="task-icon" style="background: linear-gradient(135deg, #BA68C8 0%, #7B1FA2 100%);">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <div class="task-info">
+                            <div class="task-name">网络小卫士</div>
+                            <div class="task-desc">识别网络风险，保护个人信息</div>
+                        </div>
+                        <div class="task-status status-incomplete">未完成</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="task-category">
+                <div class="category-title">
+                    <i class="fas fa-walking"></i>
+                    出行安全
+                </div>
+                <div class="task-list">
+                    <div class="task-item" id="schoolRoadTask">
+                        <div class="task-icon" style="background: linear-gradient(135deg, #FFC107 0%, #FFA000 100%);">
+                            <i class="fas fa-school"></i>
+                        </div>
+                        <div class="task-info">
+                            <div class="task-name">上下学路上</div>
+                            <div class="task-desc">学习上下学路上的安全知识</div>
+                        </div>
+                        <div class="task-status status-incomplete">未完成</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 亲情连线任务页面 -->
+    <div class="page task-page" id="familyConnectPage">
+        <div class="container">
+            <div class="task-header">
+                <div class="back-btn" id="backFromFamilyConnect">
+                    <div class="back-icon">
+                        <i class="fas fa-arrow-left"></i>
+                    </div>
+                    <span>回任务列表</span>
+                </div>
+                <h2 class="task-title">亲情连线</h2>
+                <div class="task-progress" id="familyConnectProgress">当前进度：0/2</div>
+            </div>
+            
+            <div class="task-content">
+                <div class="scene-image">
+                    <!-- 小星拿着手机的温馨小屋场景图 -->
+                    <img src="./img/发信息.jpg" alt="小星拿着手机的温馨小屋场景图">
+                </div>
+                <div class="interaction-area">
+                    <button class="option-btn" id="textMessageBtn">选文字短信</button>
+                    <button class="option-btn" id="handmadeCardBtn">选手绘贺卡</button>
+                    
+                    <!-- 文字短信选项 -->
+                    <div id="textMessageOptions" style="display: none;">
+                        <div class="option-btn text-option">爸妈注意身体</div>
+                        <div class="option-btn text-option">我自己洗碗啦</div>
+                        <div class="option-btn text-option">作业完成啦</div>
+                    </div>
+                    
+                    <!-- 手绘贺卡选项 -->
+                    <div id="handmadeCardOptions" style="display: none;">
+                        <div style="margin-bottom: 15px;">点击贴纸添加到贺卡：</div>
+                        <div style="display: flex; gap: 10px; margin-bottom: 15px;">
+                            <button class="btn btn-small sticker-btn" data-sticker="❤️">❤️ 爱心</button>
+                            <button class="btn btn-small sticker-btn" data-sticker="⭐">⭐ 星星</button>
+                            <button class="btn btn-small sticker-btn" data-sticker="🏠">🏠 小屋</button>
+                        </div>
+                        
+                        <div class="handwriting-area" id="handwritingArea">
+                            <div class="handwriting-placeholder">点击此处手写文字</div>
+                        </div>
+                        
+                        <div class="handwriting-controls">
+                            <button class="undo-btn" id="undoBtn">
+                                <i class="fas fa-undo"></i>
+                            </button>
+                            <button class="btn btn-small" id="sendCardBtn" style="display: none;">发送贺卡</button>
+                        </div>
+                        
+                        <div class="text-suggestions" id="textSuggestions" style="display: none;">
+                            <!-- 文字建议将动态添加 -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="task-footer">
+                <div class="progress-container">
+                    <div class="progress-label">
+                        <span>任务进度</span>
+                        <span id="familyConnectPercent">0%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="familyConnectProgressFill" style="width: 0%; background-color: #FF8C42;"></div>
+                    </div>
+                </div>
+                <div class="ai-feedback" id="familyConnectFeedback">
+                    <i class="fas fa-robot"></i>
+                    <span>选择一种方式帮助小星联系父母</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 小屋整理师任务页面 -->
+    <div class="page task-page" id="roomOrganizerPage">
+        <div class="container">
+            <div class="task-header">
+                <div class="back-btn" id="backFromRoomOrganizer">
+                    <div class="back-icon">
+                        <i class="fas fa-arrow-left"></i>
+                    </div>
+                    <span>回任务列表</span>
+                </div>
+                <h2 class="task-title">小屋整理师</h2>
+                <div class="task-progress" id="roomOrganizerProgress">当前进度：0/5</div>
+            </div>
+            
+            <div class="task-content">
+                <div class="scene-image">
+                    <!-- 杂乱的房间场景图 -->
+                    <img src="./img/房间.jpg" alt="杂乱的房间场景图">
+                </div>
+                <div class="interaction-area">
+                    <div style="margin-bottom: 15px;">点击物品，然后点击正确的存放位置：</div>
+                    
+                    <div class="item-container">
+                        <div class="item" data-item="衣服">衣服</div>
+                        <div class="item" data-item="文具">文具</div>
+                        <div class="item" data-item="玩具">玩具</div>
+                        <div class="item" data-item="袜子">袜子</div>
+                        <div class="item" data-item="绘本">绘本</div>
+                    </div>
+                    
+                    <div class="location-container">
+                        <div class="location" data-location="衣柜">
+                            <div class="location-label">衣柜</div>
+                            <div class="location-desc">上衣 / 裤子 / 袜子</div>
+                        </div>
+                        <div class="location" data-location="书桌">
+                            <div class="location-label">书桌</div>
+                            <div class="location-desc">文具 / 绘本</div>
+                        </div>
+                        <div class="location" data-location="收纳箱">
+                            <div class="location-label">收纳箱</div>
+                            <div class="location-desc">玩具</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="task-footer">
+                <div class="progress-container">
+                    <div class="progress-label">
+                        <span>任务进度</span>
+                        <span id="roomOrganizerPercent">0%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="roomOrganizerProgressFill" style="width: 0%; background-color: #66BB6A;"></div>
+                    </div>
+                </div>
+                <div class="ai-feedback" id="roomOrganizerFeedback">
+                    <i class="fas fa-robot"></i>
+                    <span>将物品放到正确的位置</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 伙伴的小烦恼任务页面 -->
+    <div class="page task-page" id="friendTroublePage">
+        <div class="container">
+            <div class="task-header">
+                <div class="back-btn" id="backFromFriendTrouble">
+                    <div class="back-icon">
+                        <i class="fas fa-arrow-left"></i>
+                    </div>
+                    <span>回任务列表</span>
+                </div>
+                <h2 class="task-title">伙伴的小烦恼</h2>
+                <div class="task-progress" id="friendTroubleProgress">当前进度：0/100%</div>
+            </div>
+            
+            <div class="task-content">
+                <div class="scene-image">
+                    <!-- 小星烦恼的场景图 -->
+                    <img src="./img/烦恼.jpg" alt="小宇烦恼的场景图">
+                </div>
+                <div class="interaction-area">
+                    <div class="friend-scenes">
+                        <div class="friend-scene active" data-scene="rain">
+                            <div class="friend-scene-icon">
+                                <i class="fas fa-cloud-rain"></i>
+                            </div>
+                            <div>伙伴作业湿了</div>
+                        </div>
+                        <div class="friend-scene" data-scene="classroom">
+                            <div class="friend-scene-icon">
+                                <i class="fas fa-school"></i>
+                            </div>
+                            <div>伙伴忘记带笔记本了</div>
+                        </div>
+                        <div class="friend-scene" data-scene="playground">
+                            <div class="friend-scene-icon">
+                                <i class="fas fa-running"></i>
+                            </div>
+                            <div>伙伴要比赛跑步但是很紧张</div>
+                        </div>
+                    </div>
+                    
+                    <div class="friend-actions">
+                        <button class="friend-action" data-action="纸巾">用纸巾擦作业</button>
+                        <button class="friend-action" data-action="笔记本">借笔记本</button>
+                        <button class="friend-action" data-action="贴纸">贴鼓励贴纸</button>
+                    </div>
+                    
+                    <div class="friend-feedback" id="friendFeedback">
+                        选择帮助小伙伴的方式
+                    </div>
+                </div>
+            </div>
+            
+            <div class="task-footer">
+                <div class="progress-container">
+                    <div class="progress-label">
+                        <span>任务进度</span>
+                        <span id="friendTroublePercent">0%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="friendTroubleProgressFill" style="width: 0%; background-color: #4FC3F7;"></div>
+                    </div>
+                </div>
+                <div class="ai-feedback" id="friendTroubleFeedback">
+                    <i class="fas fa-robot"></i>
+                    <span>帮助小伙伴解决烦恼</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 安全关卡页面 -->
+    <div class="page task-page" id="safetyTaskPage">
+        <div class="container">
+            <div class="task-header">
+                <div class="back-btn" id="backFromSafetyTask">
+                    <div class="back-icon">
+                        <i class="fas fa-arrow-left"></i>
+                    </div>
+                    <span>回任务列表</span>
+                </div>
+                <h2 class="task-title" id="safetyTaskTitle">陌生人敲门</h2>
+                <div class="task-progress" id="safetyTaskProgress">选对2个情境才能通关哦～</div>
+            </div>
+            
+            <div class="task-content">
+                <div class="scene-image">
+                    <!-- 门+敲门声符号静态图 -->
+                    <img src="./img/敲门.jpg" alt="门+敲门声符号静态图">
+                </div>
+                <div class="interaction-area">
+                    <div style="margin-bottom: 15px;">场景A：有人敲门，你会怎么做？</div>
+                    <button class="option-btn" id="optionA">直接开门</button>
+                    <button class="option-btn" id="optionB">大声问"你是谁"</button>
+                    <button class="option-btn" id="optionC">假装喊"爸爸快来"</button>
+                    
+                    <div style="margin: 20px 0 15px 0;">场景B：快递员说修水管，你会怎么做？</div>
+                    <button class="option-btn" id="optionD">让他进来修</button>
+                    <button class="option-btn" id="optionE">打电话问爸妈</button>
+                    <button class="option-btn" id="optionF">说"爸妈马上回来，你等一下"</button>
+                </div>
+            </div>
+            
+            <div class="task-footer">
+                <div class="progress-container">
+                    <div class="progress-label">
+                        <span>任务进度</span>
+                        <span id="safetyProgressPercent">0%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="safetyProgressFill" style="width: 0%; background-color: #F44336;"></div>
+                    </div>
+                </div>
+                <div class="ai-feedback" id="safetyFeedback">
+                    <i class="fas fa-robot"></i>
+                    <span>遇到陌生人敲门，你会怎么做？</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 网络小卫士任务页面 -->
+    <div class="page task-page" id="internetGuardianPage">
+        <div class="container">
+            <div class="task-header">
+                <div class="back-btn" id="backFromInternetGuardian">
+                    <div class="back-icon">
+                        <i class="fas fa-arrow-left"></i>
+                    </div>
+                    <span>回任务列表</span>
+                </div>
+                <h2 class="task-title">网络小卫士</h2>
+                <div class="task-progress" id="internetGuardianProgress">正确屏蔽数：0/3</div>
+            </div>
+            
+            <div class="task-content">
+                <div class="scene-image">
+                    <!-- 小星的平板消息场景图 -->
+                    <img src="./img/陌生信息.jpg" alt="小星的平板消息场景图">
+                </div>
+                <div class="interaction-area">
+                    <div style="margin-bottom: 15px;">判断以下消息，选择"屏蔽"或"正常回复"：</div>
+                    
+                    <div class="message-container">
+                        <div class="message-item">
+                            <div class="message-header">
+                                <i class="fas fa-exclamation-triangle message-warning"></i>
+                                <span>消息1</span>
+                            </div>
+                            <div class="message-content">我是客服，发地址送皮肤</div>
+                            <div class="message-actions">
+                                <button class="action-btn shield-btn" data-message="1" data-action="shield">屏蔽</button>
+                                <button class="action-btn reply-btn" data-message="1" data-action="reply">正常回复</button>
+                            </div>
+                        </div>
+                        
+                        <div class="message-item">
+                            <div class="message-header">
+                                <i class="fas fa-check-circle message-safe"></i>
+                                <span>消息2</span>
+                            </div>
+                            <div class="message-content">同学，周末一起写作业</div>
+                            <div class="message-actions">
+                                <button class="action-btn shield-btn" data-message="2" data-action="shield">屏蔽</button>
+                                <button class="action-btn reply-btn" data-message="2" data-action="reply">正常回复</button>
+                            </div>
+                        </div>
+                        
+                        <div class="message-item">
+                            <div class="message-header">
+                                <i class="fas fa-exclamation-triangle message-warning"></i>
+                                <span>消息3</span>
+                            </div>
+                            <div class="message-content">发红包，告诉我密码</div>
+                            <div class="message-actions">
+                                <button class="action-btn shield-btn" data-message="3" data-action="shield">屏蔽</button>
+                                <button class="action-btn reply-btn" data-message="3" data-action="reply">正常回复</button>
+                            </div>
+                        </div>
+                        
+                        <div class="message-item">
+                            <div class="message-header">
+                                <i class="fas fa-exclamation-triangle message-warning"></i>
+                                <span>消息4</span>
+                            </div>
+                            <div class="message-content">扫码进群领游戏币</div>
+                            <div class="message-actions">
+                                <button class="action-btn shield-btn" data-message="4" data-action="shield">屏蔽</button>
+                                <button class="action-btn reply-btn" data-message="4" data-action="reply">正常回复</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="task-footer">
+                <div class="progress-container">
+                    <div class="progress-label">
+                        <span>任务进度</span>
+                        <span id="internetGuardianPercent">0%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="internetGuardianProgressFill" style="width: 0%; background-color: #BA68C8;"></div>
+                    </div>
+                </div>
+                <div class="ai-feedback" id="internetGuardianFeedback">
+                    <i class="fas fa-robot"></i>
+                    <span>判断消息是否安全</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 上下学路上任务页面 -->
+    <div class="page task-page" id="schoolRoadPage">
+        <div class="container">
+            <div class="task-header">
+                <div class="back-btn" id="backFromSchoolRoad">
+                    <div class="back-icon">
+                        <i class="fas fa-arrow-left"></i>
+                    </div>
+                    <span>回任务列表</span>
+                </div>
+                <h2 class="task-title">上下学路上</h2>
+                <div class="task-progress" id="schoolRoadProgress">正确选择数：0/4</div>
+            </div>
+            
+            <div class="task-content">
+                <div class="scene-image">
+                    <!-- 上下学路上的各种场景图 -->
+                    <img src="./img/上下学.jpg" alt="上下学路上的各种场景图">
+                </div>
+                <div class="interaction-area">
+                    <div style="margin-bottom: 15px;">选择每个场景的正确应对方式：</div>
+                    
+                    <div style="display: flex; flex-direction: column; gap: 15px;">
+                        <div>
+                            <div>场景A：有叔叔说"你爸妈让我接你"</div>
+                            <div style="display: flex; gap: 10px; margin-top: 5px;">
+                                <button class="btn btn-small" data-scene="A" data-choice="正确">借电话跟老师确认</button>
+                                <button class="btn btn-small" data-scene="A" data-choice="错误">跟叔叔走</button>
+                            </div>
+                        </div>
+                        <div>
+                            <div>场景B：路过施工地，有漂亮石子</div>
+                            <div style="display: flex; gap: 10px; margin-top: 5px;">
+                                <button class="btn btn-small" data-scene="B" data-choice="正确">绕开施工区域</button>
+                                <button class="btn btn-small" data-scene="B" data-choice="错误">去捡石子</button>
+                            </div>
+                        </div>
+                        <div>
+                            <div>场景C：同学拉你翻护栏过马路</div>
+                            <div style="display: flex; gap: 10px; margin-top: 5px;">
+                                <button class="btn btn-small" data-scene="C" data-choice="正确">说"走斑马线更安全"</button>
+                                <button class="btn btn-small" data-scene="C" data-choice="错误">直接走过去</button>
+                            </div>
+                        </div>
+                        <div>
+                            <div>场景D：暴雨天气，同学们冲回家</div>
+                            <div style="display: flex; gap: 10px; margin-top: 5px;">
+                                <button class="btn btn-small" data-scene="D" data-choice="正确">等雨小了再走</button>
+                                <button class="btn btn-small" data-scene="D" data-choice="错误">跑着过马路</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="task-footer">
+                <div class="progress-container">
+                    <div class="progress-label">
+                        <span>任务进度</span>
+                        <span id="schoolRoadPercent">0%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="schoolRoadProgressFill" style="width: 0%; background-color: #FFC107;"></div>
+                    </div>
+                </div>
+                <div class="ai-feedback" id="schoolRoadFeedback">
+                    <i class="fas fa-robot"></i>
+                    <span>选择安全的应对方式</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 徽章馆页面 -->
+    <div class="page badge-page" id="badgePage">
+        <div class="container">
+            <div class="task-header">
+                <div class="back-btn" id="backFromBadge">
+                    <div class="back-icon">
+                        <i class="fas fa-arrow-left"></i>
+                    </div>
+                    <span>回主界面</span>
+                </div>
+                <h2 class="task-title">星星徽章馆</h2>
+                <div class="task-progress">集满3颗同主题星星可解锁</div>
+            </div>
+            
+            <div class="badge-grid">
+                <div class="badge-item" id="badge-family">
+                    <div class="badge-icon badge-locked">
+                        <i class="fas fa-heart"></i>
+                    </div>
+                    <div class="badge-name">亲情徽章</div>
+                    <div class="badge-desc">学会表达对家人的爱</div>
+                    <div class="badge-status status-locked">未解锁</div>
+                </div>
+                <div class="badge-item" id="badge-selfcare">
+                    <div class="badge-icon badge-locked">
+                        <i class="fas fa-tshirt"></i>
+                    </div>
+                    <div class="badge-name">自理徽章</div>
+                    <div class="badge-desc">学会整理自己的物品</div>
+                    <div class="badge-status status-locked">未解锁</div>
+                </div>
+                <div class="badge-item" id="badge-friendly">
+                    <div class="badge-icon badge-locked">
+                        <i class="fas fa-hands-helping"></i>
+                    </div>
+                    <div class="badge-name">友善徽章</div>
+                    <div class="badge-desc">学会帮助和鼓励朋友</div>
+                    <div class="badge-status status-locked">未解锁</div>
+                </div>
+                <div class="badge-item" id="badge-safety">
+                    <div class="badge-icon badge-locked">
+                        <i class="fas fa-house-user"></i>
+                    </div>
+                    <div class="badge-name">安全徽章</div>
+                    <div class="badge-desc">学会应对陌生人</div>
+                    <div class="badge-status status-locked">未解锁</div>
+                </div>
+                <div class="badge-item" id="badge-internet">
+                    <div class="badge-icon badge-locked">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <div class="badge-name">网络安全徽章</div>
+                    <div class="badge-desc">学会识别网络风险</div>
+                    <div class="badge-status status-locked">未解锁</div>
+                </div>
+                <div class="badge-item" id="badge-campus">
+                    <div class="badge-icon badge-locked">
+                        <i class="fas fa-school"></i>
+                    </div>
+                    <div class="badge-name">校园安全徽章</div>
+                    <div class="badge-desc">学会上下学路上保护自己</div>
+                    <div class="badge-status status-locked">未解锁</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 成长日记页面 -->
+    <div class="page diary-page" id="diaryPage">
+        <div class="container">
+            <div class="task-header">
+                <div class="back-btn" id="backFromDiary">
+                    <div class="back-icon">
+                        <i class="fas fa-arrow-left"></i>
+                    </div>
+                    <span>回主界面</span>
+                </div>
+                <h2 class="task-title">成长日记</h2>
+                <div class="task-progress">记录小星的成长点滴</div>
+            </div>
+            
+            <div class="diary-content">
+                <div class="diary-list" id="diaryList">
+                    <div class="diary-item" data-task="roomOrganizer">
+                        <div class="diary-item-title">小屋整理师</div>
+                        <div class="diary-item-date">未完成</div>
+                    </div>
+                    <div class="diary-item" data-task="friendTrouble">
+                        <div class="diary-item-title">伙伴的小烦恼</div>
+                        <div class="diary-item-date">未完成</div>
+                    </div>
+                    <div class="diary-item" data-task="familyConnect">
+                        <div class="diary-item-title">亲情连线</div>
+                        <div class="diary-item-date">未完成</div>
+                    </div>
+                    <div class="diary-item" data-task="strangerKnock">
+                        <div class="diary-item-title">陌生人敲门</div>
+                        <div class="diary-item-date">未完成</div>
+                    </div>
+                    <div class="diary-item" data-task="internetGuardian">
+                        <div class="diary-item-title">网络小卫士</div>
+                        <div class="diary-item-date">未完成</div>
+                    </div>
+                    <div class="diary-item" data-task="schoolRoad">
+                        <div class="diary-item-title">上下学路上</div>
+                        <div class="diary-item-date">未完成</div>
+                    </div>
+                </div>
+                <div class="diary-detail">
+                    <div class="diary-image">
+                        <!-- 小屋整理师任务完成后的场景图 -->
+                        <img src="./img/整齐房间.jpg" alt="小屋整理师任务完成后的场景图">
+                    </div>
+                    <div class="diary-text">
+                        你已经很棒啦！
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 获得星星模态框 -->
+    <div class="modal" id="starModal">
+        <div class="modal-content">
+            <div class="modal-icon">
+                <i class="fas fa-star"></i>
+            </div>
+            <div class="modal-title">恭喜获得星星！</div>
+            <div class="modal-text" id="starModalText">你成功完成了任务，获得了一颗安全星星！</div>
+            <button class="btn modal-btn" id="closeStarModal">继续冒险</button>
+        </div>
+    </div>
+    
+    <!-- 解锁徽章模态框 -->
+    <div class="modal" id="badgeModal">
+        <div class="modal-content">
+            <div class="modal-icon">
+                <i class="fas fa-trophy"></i>
+            </div>
+            <div class="modal-title">恭喜解锁徽章！</div>
+            <div class="modal-text" id="badgeModalText">你集满了3颗同主题星星，解锁了新的徽章！</div>
+            <button class="btn modal-btn" id="closeBadgeModal">查看徽章</button>
+        </div>
+    </div>
+
+    <script>
+        // 页面元素
+        const homePage = document.getElementById('homePage');
+        const mainPage = document.getElementById('mainPage');
+        const dailyTasksPage = document.getElementById('dailyTasksPage');
+        const safetyTasksPage = document.getElementById('safetyTasksPage');
+        const familyConnectPage = document.getElementById('familyConnectPage');
+        const roomOrganizerPage = document.getElementById('roomOrganizerPage');
+        const friendTroublePage = document.getElementById('friendTroublePage');
+        const safetyTaskPage = document.getElementById('safetyTaskPage');
+        const internetGuardianPage = document.getElementById('internetGuardianPage');
+        const schoolRoadPage = document.getElementById('schoolRoadPage');
+        const badgePage = document.getElementById('badgePage');
+        const diaryPage = document.getElementById('diaryPage');
+        
+        // 按钮元素
+        const startBtn = document.getElementById('startBtn');
+        const dailyTaskBtn = document.getElementById('dailyTask');
+        const safetyChallengeBtn = document.getElementById('safetyChallenge');
+        const badgeGalleryBtn = document.getElementById('badgeGallery');
+        const growthDiaryBtn = document.getElementById('growthDiary');
+        
+        // 预览任务元素
+        const previewTask1 = document.getElementById('previewTask1');
+        const previewTask2 = document.getElementById('previewTask2');
+        const previewTask3 = document.getElementById('previewTask3');
+        
+        // 任务选择元素
+        const familyConnectTask = document.getElementById('familyConnectTask');
+        const roomOrganizerTask = document.getElementById('roomOrganizerTask');
+        const friendTroubleTask = document.getElementById('friendTroubleTask');
+        const strangerKnockTask = document.getElementById('strangerKnockTask');
+        const internetGuardianTask = document.getElementById('internetGuardianTask');
+        const schoolRoadTask = document.getElementById('schoolRoadTask');
+        
+        // 返回按钮
+        const backFromDailyTasks = document.getElementById('backFromDailyTasks');
+        const backFromSafetyTasks = document.getElementById('backFromSafetyTasks');
+        const backFromFamilyConnect = document.getElementById('backFromFamilyConnect');
+        const backFromRoomOrganizer = document.getElementById('backFromRoomOrganizer');
+        const backFromFriendTrouble = document.getElementById('backFromFriendTrouble');
+        const backFromSafetyTask = document.getElementById('backFromSafetyTask');
+        const backFromInternetGuardian = document.getElementById('backFromInternetGuardian');
+        const backFromSchoolRoad = document.getElementById('backFromSchoolRoad');
+        const backFromBadge = document.getElementById('backFromBadge');
+        const backFromDiary = document.getElementById('backFromDiary');
+        
+        // 导航图标
+        const badgeIcon = document.getElementById('badgeIcon');
+        const mobileHomeIcon = document.getElementById('mobileHomeIcon');
+        const mobileTaskIcon = document.getElementById('mobileTaskIcon');
+        const mobileBadgeIcon = document.getElementById('mobileBadgeIcon');
+        const mobileDiaryIcon = document.getElementById('mobileDiaryIcon');
+        
+        // 侧边栏元素
+        const recentActivity = document.getElementById('recentActivity');
+        const dailyProgressValue = document.getElementById('dailyProgressValue');
+        const safetyProgressValue = document.getElementById('safetyProgressValue');
+        const badgeProgressValue = document.getElementById('badgeProgressValue');
+        
+        // 亲情连线任务元素
+        const textMessageBtn = document.getElementById('textMessageBtn');
+        const handmadeCardBtn = document.getElementById('handmadeCardBtn');
+        const textMessageOptions = document.getElementById('textMessageOptions');
+        const handmadeCardOptions = document.getElementById('handmadeCardOptions');
+        const stickerButtons = document.querySelectorAll('.sticker-btn');
+        const handwritingArea = document.getElementById('handwritingArea');
+        const undoBtn = document.getElementById('undoBtn');
+        const sendCardBtn = document.getElementById('sendCardBtn');
+        const textSuggestions = document.getElementById('textSuggestions');
+        const familyConnectProgress = document.getElementById('familyConnectProgress');
+        const familyConnectProgressFill = document.getElementById('familyConnectProgressFill');
+        const familyConnectPercent = document.getElementById('familyConnectPercent');
+        const familyConnectFeedback = document.getElementById('familyConnectFeedback');
+        
+        // 小屋整理师任务元素
+        const roomOrganizerProgress = document.getElementById('roomOrganizerProgress');
+        const roomOrganizerProgressFill = document.getElementById('roomOrganizerProgressFill');
+        const roomOrganizerPercent = document.getElementById('roomOrganizerPercent');
+        const roomOrganizerFeedback = document.getElementById('roomOrganizerFeedback');
+        const items = document.querySelectorAll('.item');
+        const locations = document.querySelectorAll('.location');
+        
+        // 伙伴的小烦恼任务元素
+        const friendTroubleProgress = document.getElementById('friendTroubleProgress');
+        const friendTroubleProgressFill = document.getElementById('friendTroubleProgressFill');
+        const friendTroublePercent = document.getElementById('friendTroublePercent');
+        const friendTroubleFeedback = document.getElementById('friendTroubleFeedback');
+        const friendScenes = document.querySelectorAll('.friend-scene');
+        const friendActions = document.querySelectorAll('.friend-action');
+        const friendFeedback = document.getElementById('friendFeedback');
+        
+        // 安全任务交互元素
+        const optionA = document.getElementById('optionA');
+        const optionB = document.getElementById('optionB');
+        const optionC = document.getElementById('optionC');
+        const optionD = document.getElementById('optionD');
+        const optionE = document.getElementById('optionE');
+        const optionF = document.getElementById('optionF');
+        const safetyProgressFill = document.getElementById('safetyProgressFill');
+        const safetyProgressPercent = document.getElementById('safetyProgressPercent');
+        const safetyFeedback = document.getElementById('safetyFeedback');
+        
+        // 网络小卫士任务元素
+        const internetGuardianProgress = document.getElementById('internetGuardianProgress');
+        const internetGuardianProgressFill = document.getElementById('internetGuardianProgressFill');
+        const internetGuardianPercent = document.getElementById('internetGuardianPercent');
+        const internetGuardianFeedback = document.getElementById('internetGuardianFeedback');
+        const actionButtons = document.querySelectorAll('.action-btn');
+        
+        // 上下学路上任务元素
+        const schoolRoadProgress = document.getElementById('schoolRoadProgress');
+        const schoolRoadProgressFill = document.getElementById('schoolRoadProgressFill');
+        const schoolRoadPercent = document.getElementById('schoolRoadPercent');
+        const schoolRoadFeedback = document.getElementById('schoolRoadFeedback');
+        const schoolRoadChoices = document.querySelectorAll('[data-scene]');
+        
+        // 模态框元素
+        const starModal = document.getElementById('starModal');
+        const badgeModal = document.getElementById('badgeModal');
+        const closeStarModal = document.getElementById('closeStarModal');
+        const closeBadgeModal = document.getElementById('closeBadgeModal');
+        const starModalText = document.getElementById('starModalText');
+        const badgeModalText = document.getElementById('badgeModalText');
+        
+        // 成长日记元素
+        const diaryList = document.getElementById('diaryList');
+        
+        // 游戏状态
+        const starsCount = document.getElementById('starsCount');
+        let stars = 0;
+        let completedTasks = {
+            daily: 0,
+            safety: 0,
+            badges: 0
+        };
+        
+        // 徽章解锁状态
+        const badgeStatus = {
+            family: false,
+            selfcare: false,
+            friendly: false,
+            safety: false,
+            internet: false,
+            campus: false
+        };
+        
+        // 任务状态
+        let familyConnectState = {
+            progress: 0,
+            maxProgress: 2,
+            completed: false
+        };
+        
+        let roomOrganizerState = {
+            progress: 0,
+            maxProgress: 5,
+            completed: false
+        };
+        
+        let friendTroubleState = {
+            progress: 0,
+            maxProgress: 100,
+            completed: false
+        };
+        
+        let safetyTaskState = {
+            progress: 0,
+            maxProgress: 2,
+            completed: false
+        };
+        
+        let internetGuardianState = {
+            progress: 0,
+            maxProgress: 3,
+            completed: false
+        };
+        
+        let schoolRoadState = {
+            progress: 0,
+            maxProgress: 4,
+            completed: false
+        };
+        
+        // 页面切换函数
+        function showPage(page) {
+            // 隐藏所有页面
+            document.querySelectorAll('.page').forEach(p => {
+                p.classList.remove('active');
+            });
+            
+            // 显示目标页面
+            page.classList.add('active');
+            
+            // 更新底部导航激活状态
+            updateBottomNav(page.id);
+            
+            // 如果是徽章页面，更新徽章状态
+            if (page.id === 'badgePage') {
+                updateBadgeDisplay();
+            }
+            
+            // 如果是日记页面，更新日记状态
+            if (page.id === 'diaryPage') {
+                updateDiaryDisplay();
+            }
+        }
+        
+        function updateBottomNav(activePageId) {
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            
+            switch(activePageId) {
+                case 'homePage':
+                    mobileHomeIcon.classList.add('active');
+                    break;
+                case 'mainPage':
+                    mobileTaskIcon.classList.add('active');
+                    break;
+                case 'badgePage':
+                    mobileBadgeIcon.classList.add('active');
+                    break;
+                case 'diaryPage':
+                    mobileDiaryIcon.classList.add('active');
+                    break;
+            }
+        }
+        
+        // 更新最近活动
+        function updateRecentActivity(taskName, starType) {
+            // 移除初始提示
+            const noActivity = recentActivity.querySelector('.no-activity');
+            if (noActivity) {
+                noActivity.remove();
+            }
+            
+            // 添加新活动
+            const activityItem = document.createElement('li');
+            activityItem.className = 'activity-item';
+            activityItem.innerHTML = `
+                <div class="activity-icon">
+                    <i class="fas fa-star"></i>
+                </div>
+                <div class="activity-text">完成了${taskName}，获得了${starType}</div>
+            `;
+            
+            // 将新活动添加到顶部
+            recentActivity.insertBefore(activityItem, recentActivity.firstChild);
+            
+            // 限制活动数量为3条
+            if (recentActivity.children.length > 3) {
+                recentActivity.removeChild(recentActivity.lastChild);
+            }
+        }
+        
+        // 更新进度统计
+        function updateProgressStats() {
+            dailyProgressValue.textContent = `${completedTasks.daily}/3`;
+            safetyProgressValue.textContent = `${completedTasks.safety}/3`;
+            badgeProgressValue.textContent = `${completedTasks.badges}/6`;
+        }
+        
+        // 更新任务进度显示
+        function updateTaskProgress(taskState, progressElement, progressFill, percentElement) {
+            const percent = (taskState.progress / taskState.maxProgress) * 100;
+            progressElement.textContent = `当前进度：${taskState.progress}/${taskState.maxProgress}`;
+            progressFill.style.width = `${percent}%`;
+            percentElement.textContent = `${percent}%`;
+        }
+        
+        // 更新任务状态显示
+        function updateTaskStatus(taskId, completed) {
+            const taskElement = document.getElementById(taskId);
+            if (taskElement) {
+                const statusElement = taskElement.querySelector('.task-status');
+                if (completed) {
+                    statusElement.textContent = '已完成';
+                    statusElement.className = 'task-status status-completed';
+                } else {
+                    statusElement.textContent = '未完成';
+                    statusElement.className = 'task-status status-incomplete';
+                }
+            }
+        }
+        
+        // 更新徽章显示
+        function updateBadgeDisplay() {
+            Object.keys(badgeStatus).forEach(badgeId => {
+                const badgeElement = document.getElementById(`badge-${badgeId}`);
+                if (badgeElement && badgeStatus[badgeId]) {
+                    badgeElement.querySelector('.badge-icon').classList.remove('badge-locked');
+                    badgeElement.querySelector('.badge-icon').classList.add('badge-unlocked');
+                    badgeElement.querySelector('.badge-status').classList.remove('status-locked');
+                    badgeElement.querySelector('.badge-status').classList.add('status-unlocked');
+                    badgeElement.querySelector('.badge-status').textContent = '已解锁';
+                }
+            });
+        }
+        
+        // 更新成长日记显示
+        function updateDiaryDisplay() {
+            const diaryItems = diaryList.querySelectorAll('.diary-item');
+            diaryItems.forEach(item => {
+                const taskType = item.getAttribute('data-task');
+                let isCompleted = false;
+                
+                switch(taskType) {
+                    case 'familyConnect':
+                        isCompleted = familyConnectState.completed;
+                        break;
+                    case 'roomOrganizer':
+                        isCompleted = roomOrganizerState.completed;
+                        break;
+                    case 'friendTrouble':
+                        isCompleted = friendTroubleState.completed;
+                        break;
+                    case 'strangerKnock':
+                        isCompleted = safetyTaskState.completed;
+                        break;
+                    case 'internetGuardian':
+                        isCompleted = internetGuardianState.completed;
+                        break;
+                    case 'schoolRoad':
+                        isCompleted = schoolRoadState.completed;
+                        break;
+                }
+                
+                const dateElement = item.querySelector('.diary-item-date');
+                if (isCompleted) {
+                    dateElement.textContent = '已完成';
+                    dateElement.style.color = '#4CAF50';
+                } else {
+                    dateElement.textContent = '未完成';
+                    dateElement.style.color = '#999';
+                }
+            });
+        }
+        
+        // 解锁徽章
+        function unlockBadge(badgeId, badgeName) {
+            if (!badgeStatus[badgeId]) {
+                badgeStatus[badgeId] = true;
+                completedTasks.badges++;
+                updateProgressStats();
+                
+                // 显示解锁徽章模态框
+                badgeModalText.textContent = `恭喜你解锁了${badgeName}！`;
+                badgeModal.style.display = 'flex';
+                
+                // 更新徽章显示
+                updateBadgeDisplay();
+            }
+        }
+        
+        // 检查徽章解锁条件
+        function checkBadgeUnlock() {
+            // 亲情徽章 - 完成亲情连线
+            if (familyConnectState.completed && !badgeStatus.family) {
+                unlockBadge('family', '亲情徽章');
+            }
+            
+            // 自理徽章 - 完成小屋整理师
+            if (roomOrganizerState.completed && !badgeStatus.selfcare) {
+                unlockBadge('selfcare', '自理徽章');
+            }
+            
+            // 友善徽章 - 完成伙伴的小烦恼
+            if (friendTroubleState.completed && !badgeStatus.friendly) {
+                unlockBadge('friendly', '友善徽章');
+            }
+            
+            // 安全徽章 - 完成陌生人敲门
+            if (safetyTaskState.completed && !badgeStatus.safety) {
+                unlockBadge('safety', '安全徽章');
+            }
+            
+            // 网络安全徽章 - 完成网络小卫士
+            if (internetGuardianState.completed && !badgeStatus.internet) {
+                unlockBadge('internet', '网络安全徽章');
+            }
+            
+            // 校园安全徽章 - 完成上下学路上
+            if (schoolRoadState.completed && !badgeStatus.campus) {
+                unlockBadge('campus', '校园安全徽章');
+            }
+        }
+        
+        // 事件监听
+        startBtn.addEventListener('click', () => {
+            showPage(mainPage);
+        });
+        
+        dailyTaskBtn.addEventListener('click', () => {
+            showPage(dailyTasksPage);
+        });
+        
+        safetyChallengeBtn.addEventListener('click', () => {
+            showPage(safetyTasksPage);
+        });
+        
+        badgeGalleryBtn.addEventListener('click', () => {
+            showPage(badgePage);
+        });
+        
+        growthDiaryBtn.addEventListener('click', () => {
+            showPage(diaryPage);
+        });
+        
+        // 预览任务事件
+        previewTask1.addEventListener('click', () => {
+            showPage(roomOrganizerPage);
+        });
+        
+        previewTask2.addEventListener('click', () => {
+            showPage(safetyTaskPage);
+        });
+        
+        previewTask3.addEventListener('click', () => {
+            showPage(friendTroublePage);
+        });
+        
+        // 任务选择事件
+        familyConnectTask.addEventListener('click', () => {
+            showPage(familyConnectPage);
+        });
+        
+        roomOrganizerTask.addEventListener('click', () => {
+            showPage(roomOrganizerPage);
+        });
+        
+        friendTroubleTask.addEventListener('click', () => {
+            showPage(friendTroublePage);
+        });
+        
+        strangerKnockTask.addEventListener('click', () => {
+            showPage(safetyTaskPage);
+        });
+        
+        internetGuardianTask.addEventListener('click', () => {
+            showPage(internetGuardianPage);
+        });
+        
+        schoolRoadTask.addEventListener('click', () => {
+            showPage(schoolRoadPage);
+        });
+        
+        badgeIcon.addEventListener('click', () => {
+            showPage(badgePage);
+        });
+        
+        // 底部导航事件
+        mobileHomeIcon.addEventListener('click', () => {
+            showPage(homePage);
+        });
+        
+        mobileTaskIcon.addEventListener('click', () => {
+            showPage(mainPage);
+        });
+        
+        mobileBadgeIcon.addEventListener('click', () => {
+            showPage(badgePage);
+        });
+        
+        mobileDiaryIcon.addEventListener('click', () => {
+            showPage(diaryPage);
+        });
+        
+        // 返回按钮事件
+        backFromDailyTasks.addEventListener('click', () => {
+            showPage(mainPage);
+        });
+        
+        backFromSafetyTasks.addEventListener('click', () => {
+            showPage(mainPage);
+        });
+        
+        backFromFamilyConnect.addEventListener('click', () => {
+            showPage(dailyTasksPage);
+        });
+        
+        backFromRoomOrganizer.addEventListener('click', () => {
+            showPage(dailyTasksPage);
+        });
+        
+        backFromFriendTrouble.addEventListener('click', () => {
+            showPage(dailyTasksPage);
+        });
+        
+        backFromSafetyTask.addEventListener('click', () => {
+            showPage(safetyTasksPage);
+        });
+        
+        backFromInternetGuardian.addEventListener('click', () => {
+            showPage(safetyTasksPage);
+        });
+        
+        backFromSchoolRoad.addEventListener('click', () => {
+            showPage(safetyTasksPage);
+        });
+        
+        backFromBadge.addEventListener('click', () => {
+            showPage(mainPage);
+        });
+        
+        backFromDiary.addEventListener('click', () => {
+            showPage(mainPage);
+        });
+        
+        // 亲情连线任务交互
+        textMessageBtn.addEventListener('click', () => {
+            textMessageOptions.style.display = 'block';
+            handmadeCardOptions.style.display = 'none';
+        });
+        
+        handmadeCardBtn.addEventListener('click', () => {
+            textMessageOptions.style.display = 'none';
+            handmadeCardOptions.style.display = 'block';
+        });
+        
+        // 文字短信选项
+        document.querySelectorAll('.text-option').forEach(option => {
+            option.addEventListener('click', () => {
+                if (!familyConnectState.completed) {
+                    familyConnectState.progress++;
+                    updateTaskProgress(familyConnectState, familyConnectProgress, familyConnectProgressFill, familyConnectPercent);
+                    
+                    if (familyConnectState.progress >= familyConnectState.maxProgress) {
+                        familyConnectState.completed = true;
+                        familyConnectFeedback.innerHTML = '<i class="fas fa-robot"></i><span>爸妈回复：宝贝真懂事！爸妈很快回家～</span>';
+                        setTimeout(() => {
+                            addStar('亲情星星', '亲情连线');
+                            completedTasks.daily++;
+                            updateProgressStats();
+                            updateTaskStatus('familyConnectTask', true);
+                            checkBadgeUnlock();
+                            updateDiaryDisplay();
+                        }, 1500);
+                    }
+                }
+            });
+        });
+        
+        // 手绘贺卡交互
+        let selectedStickers = [];
+        
+        stickerButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const sticker = btn.getAttribute('data-sticker');
+                selectedStickers.push(sticker);
+                handwritingArea.innerHTML += `<span style="font-size: 24px; margin: 5px;">${sticker}</span>`;
+                
+                if (selectedStickers.length >= 3) {
+                    sendCardBtn.style.display = 'block';
+                }
+            });
+        });
+        
+        handwritingArea.addEventListener('click', () => {
+            // 模拟手写输入
+            handwritingArea.innerHTML = '<div style="font-size: 18px; color: #333;">小星想你们了</div>';
+            textSuggestions.style.display = 'flex';
+            textSuggestions.innerHTML = `
+                <button class="suggestion-btn">爸爸妈妈我想你们</button>
+                <button class="suggestion-btn">我最近很乖</button>
+                <button class="suggestion-btn">期待你们回家</button>
+            `;
+            
+            // 文字建议点击事件
+            document.querySelectorAll('.suggestion-btn').forEach(suggestion => {
+                suggestion.addEventListener('click', () => {
+                    handwritingArea.innerHTML = `<div style="font-size: 18px; color: #333;">${suggestion.textContent}</div>`;
+                    sendCardBtn.style.display = 'block';
+                });
+            });
+        });
+        
+        undoBtn.addEventListener('click', () => {
+            // 模拟撤销功能
+            handwritingArea.innerHTML = '<div class="handwriting-placeholder">点击此处手写文字</div>';
+            selectedStickers = [];
+            sendCardBtn.style.display = 'none';
+            textSuggestions.style.display = 'none';
+        });
+        
+        sendCardBtn.addEventListener('click', () => {
+            if (!familyConnectState.completed) {
+                familyConnectState.progress++;
+                updateTaskProgress(familyConnectState, familyConnectProgress, familyConnectProgressFill, familyConnectPercent);
+                
+                if (familyConnectState.progress >= familyConnectState.maxProgress) {
+                    familyConnectState.completed = true;
+                    familyConnectFeedback.innerHTML = '<i class="fas fa-robot"></i><span>爸妈回复：宝贝真懂事！爸妈很快回家～</span>';
+                    setTimeout(() => {
+                        addStar('亲情星星', '亲情连线');
+                        completedTasks.daily++;
+                        updateProgressStats();
+                        updateTaskStatus('familyConnectTask', true);
+                        checkBadgeUnlock();
+                        updateDiaryDisplay();
+                    }, 1500);
+                }
+            }
+        });
+        
+        // 小屋整理师任务交互
+        let selectedItem = null;
+        
+        items.forEach(item => {
+            item.addEventListener('click', () => {
+                // 清除之前的选择
+                items.forEach(i => i.classList.remove('selected'));
+                locations.forEach(l => {
+                    l.classList.remove('correct', 'incorrect');
+                });
+                
+                // 选择当前物品
+                item.classList.add('selected');
+                selectedItem = item.getAttribute('data-item');
+                
+                // 提示正确位置
+                const correctLocation = getCorrectLocation(selectedItem);
+                locations.forEach(location => {
+                    if (location.getAttribute('data-location') === correctLocation) {
+                        location.classList.add('correct');
+                    }
+                });
+            });
+        });
+        
+        locations.forEach(location => {
+            location.addEventListener('click', () => {
+                if (!selectedItem) return;
+                
+                const locationName = location.getAttribute('data-location');
+                const correctLocation = getCorrectLocation(selectedItem);
+                
+                if (locationName === correctLocation) {
+                    // 正确选择
+                    if (!roomOrganizerState.completed) {
+                        roomOrganizerState.progress++;
+                        updateTaskProgress(roomOrganizerState, roomOrganizerProgress, roomOrganizerProgressFill, roomOrganizerPercent);
+                        
+                        // 移除已整理的物品
+                        document.querySelector(`.item[data-item="${selectedItem}"]`).style.display = 'none';
+                        
+                        if (roomOrganizerState.progress >= roomOrganizerState.maxProgress) {
+                            roomOrganizerState.completed = true;
+                            roomOrganizerFeedback.innerHTML = '<i class="fas fa-robot"></i><span>小星的房间好干净！获得1颗自理星星～</span>';
+                            setTimeout(() => {
+                                addStar('自理星星', '小屋整理师');
+                                completedTasks.daily++;
+                                updateProgressStats();
+                                updateTaskStatus('roomOrganizerTask', true);
+                                checkBadgeUnlock();
+                                updateDiaryDisplay();
+                            }, 1500);
+                        }
+                    }
+                } else {
+                    // 错误选择
+                    location.classList.add('incorrect');
+                    roomOrganizerFeedback.innerHTML = `<i class="fas fa-robot"></i><span>不对哦，${selectedItem}要放${correctLocation}～</span>`;
+                    
+                    setTimeout(() => {
+                        location.classList.remove('incorrect');
+                    }, 1000);
+                }
+                
+                // 重置选择
+                selectedItem = null;
+                items.forEach(i => i.classList.remove('selected'));
+                locations.forEach(l => {
+                    l.classList.remove('correct', 'incorrect');
+                });
+            });
+        });
+        
+        function getCorrectLocation(item) {
+            const locationMap = {
+                '衣服': '衣柜',
+                '袜子': '衣柜',
+                '文具': '书桌',
+                '绘本': '书桌',
+                '玩具': '收纳箱'
+            };
+            return locationMap[item];
+        }
+        
+        // 伙伴的小烦恼任务交互
+        friendScenes.forEach(scene => {
+            scene.addEventListener('click', () => {
+                friendScenes.forEach(s => s.classList.remove('active'));
+                scene.classList.add('active');
+            });
+        });
+        
+        friendActions.forEach(action => {
+            action.addEventListener('click', () => {
+                const actionType = action.getAttribute('data-action');
+                let progress = 0;
+                let feedback = '';
+                
+                switch(actionType) {
+                    case '纸巾':
+                        progress = 30;
+                        feedback = '小星：谢谢，但作业还是看不清...';
+                        break;
+                    case '笔记本':
+                        progress = 60;
+                        feedback = '小星：可以一起补作业吗？';
+                        break;
+                    case '贴纸':
+                        progress = 10;
+                        feedback = '小星：你真好！';
+                        break;
+                }
+                
+                if (!friendTroubleState.completed) {
+                    friendTroubleState.progress = Math.min(friendTroubleState.progress + progress, 100);
+                    updateTaskProgress(friendTroubleState, friendTroubleProgress, friendTroubleProgressFill, friendTroublePercent);
+                    friendFeedback.textContent = feedback;
+                    
+                    if (friendTroubleState.progress >= friendTroubleState.maxProgress) {
+                        friendTroubleState.completed = true;
+                        friendTroubleFeedback.innerHTML = '<i class="fas fa-robot"></i><span>AI总结：安慰朋友要帮忙+鼓励哦～获得1颗友善星星</span>';
+                        setTimeout(() => {
+                            addStar('友善星星', '伙伴的小烦恼');
+                            completedTasks.daily++;
+                            updateProgressStats();
+                            updateTaskStatus('friendTroubleTask', true);
+                            checkBadgeUnlock();
+                            updateDiaryDisplay();
+                        }, 1500);
+                    }
+                }
+            });
+        });
+        
+        // 安全任务交互
+        let sceneACompleted = false;
+        let sceneBCompleted = false;
+        
+        optionA.addEventListener('click', () => {
+            if (!safetyTaskState.completed) {
+                optionA.classList.add('incorrect');
+                safetyFeedback.innerHTML = '<i class="fas fa-robot"></i><span>不能随便开门！</span>';
+                
+                setTimeout(() => {
+                    optionA.classList.remove('incorrect');
+                }, 1000);
+            }
+        });
+        
+        optionB.addEventListener('click', () => {
+            if (!safetyTaskState.completed) {
+                optionB.classList.add('correct');
+                safetyFeedback.innerHTML = '<i class="fas fa-robot"></i><span>陌生人：我是你爸妈朋友 → 给爸妈打电话确认</span>';
+                
+                setTimeout(() => {
+                    sceneACompleted = true;
+                    checkSafetyTaskCompletion();
+                }, 1500);
+            }
+        });
+        
+        optionC.addEventListener('click', () => {
+            if (!safetyTaskState.completed) {
+                optionC.classList.add('correct');
+                sceneACompleted = true;
+                checkSafetyTaskCompletion();
+            }
+        });
+        
+        optionD.addEventListener('click', () => {
+            if (!safetyTaskState.completed) {
+                optionD.classList.add('incorrect');
+                safetyFeedback.innerHTML = '<i class="fas fa-robot"></i><span>不能随便开门！</span>';
+                
+                setTimeout(() => {
+                    optionD.classList.remove('incorrect');
+                }, 1000);
+            }
+        });
+        
+        optionE.addEventListener('click', () => {
+            if (!safetyTaskState.completed) {
+                optionE.classList.add('correct');
+                sceneBCompleted = true;
+                checkSafetyTaskCompletion();
+            }
+        });
+        
+        optionF.addEventListener('click', () => {
+            if (!safetyTaskState.completed) {
+                optionF.classList.add('correct');
+                sceneBCompleted = true;
+                checkSafetyTaskCompletion();
+            }
+        });
+        
+        function checkSafetyTaskCompletion() {
+            if (sceneACompleted && sceneBCompleted) {
+                safetyTaskState.progress = safetyTaskState.maxProgress;
+                safetyProgressFill.style.width = '100%';
+                safetyProgressPercent.textContent = '100%';
+                safetyFeedback.innerHTML = '<i class="fas fa-robot"></i><span>遇到陌生人，先确认身份最安全！获得1颗安全星星</span>';
+                safetyTaskState.completed = true;
+                
+                setTimeout(() => {
+                    addStar('安全星星', '陌生人敲门');
+                    completedTasks.safety++;
+                    updateProgressStats();
+                    updateTaskStatus('strangerKnockTask', true);
+                    checkBadgeUnlock();
+                    updateDiaryDisplay();
+                }, 1500);
+            }
+        }
+        
+        // 网络小卫士任务交互
+        actionButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const message = btn.getAttribute('data-message');
+                const action = btn.getAttribute('data-action');
+                const isCorrect = checkMessageAction(message, action);
+                
+                if (isCorrect && !internetGuardianState.completed) {
+                    internetGuardianState.progress++;
+                    updateTaskProgress(internetGuardianState, internetGuardianProgress, internetGuardianProgressFill, internetGuardianPercent);
+                    
+                    if (internetGuardianState.progress >= internetGuardianState.maxProgress) {
+                        internetGuardianState.completed = true;
+                        internetGuardianFeedback.innerHTML = '<i class="fas fa-robot"></i><span>网络上不能随便说隐私！获得1颗网络安全星</span>';
+                        setTimeout(() => {
+                            addStar('网络安全星', '网络小卫士');
+                            completedTasks.safety++;
+                            updateProgressStats();
+                            updateTaskStatus('internetGuardianTask', true);
+                            checkBadgeUnlock();
+                            updateDiaryDisplay();
+                        }, 1500);
+                    }
+                }
+            });
+        });
+        
+        function checkMessageAction(message, action) {
+            // 消息1、3、4应该屏蔽，消息2应该正常回复
+            if ((message === '1' || message === '3' || message === '4') && action === 'shield') {
+                return true;
+            } else if (message === '2' && action === 'reply') {
+                return true;
+            }
+            return false;
+        }
+        
+        // 上下学路上任务交互
+        schoolRoadChoices.forEach(choice => {
+            choice.addEventListener('click', () => {
+                const isCorrect = choice.getAttribute('data-choice') === '正确';
+                
+                if (isCorrect && !schoolRoadState.completed) {
+                    schoolRoadState.progress++;
+                    updateTaskProgress(schoolRoadState, schoolRoadProgress, schoolRoadProgressFill, schoolRoadPercent);
+                    
+                    if (schoolRoadState.progress >= schoolRoadState.maxProgress) {
+                        schoolRoadState.completed = true;
+                        schoolRoadFeedback.innerHTML = '<i class="fas fa-robot"></i><span>上下学路上要安全第一！获得1颗校园安全星</span>';
+                        setTimeout(() => {
+                            addStar('校园安全星', '上下学路上');
+                            completedTasks.safety++;
+                            updateProgressStats();
+                            updateTaskStatus('schoolRoadTask', true);
+                            checkBadgeUnlock();
+                            updateDiaryDisplay();
+                        }, 1500);
+                    }
+                }
+            });
+        });
+        
+        // 星星系统
+        function addStar(starType, taskName) {
+            stars++;
+            updateStarsCount();
+            
+            // 更新最近活动
+            updateRecentActivity(taskName, starType);
+            
+            // 更新进度统计
+            updateProgressStats();
+            
+            // 显示获得星星的模态框
+            starModalText.textContent = `你成功完成了任务，获得了一颗${starType}！`;
+            starModal.style.display = 'flex';
+        }
+        
+        function updateStarsCount() {
+            starsCount.textContent = `我的星星：${stars}/10`;
+        }
+        
+        // 关闭模态框
+        closeStarModal.addEventListener('click', () => {
+            starModal.style.display = 'none';
+        });
+        
+        closeBadgeModal.addEventListener('click', () => {
+            badgeModal.style.display = 'none';
+            showPage(badgePage);
+        });
+        
+        // 点击模态框外部关闭
+        window.addEventListener('click', (e) => {
+            if (e.target === starModal) {
+                starModal.style.display = 'none';
+            }
+            if (e.target === badgeModal) {
+                badgeModal.style.display = 'none';
+            }
+        });
+        
+        // 初始化
+        updateStarsCount();
+        updateProgressStats();
+        updateDiaryDisplay();
+    </script>
+</body>
+</html>
